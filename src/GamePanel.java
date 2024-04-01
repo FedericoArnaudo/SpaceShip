@@ -7,19 +7,14 @@ public class GamePanel extends JPanel implements Runnable{
     final int scale = 3;
     public int tileSize = originalTileSize * scale;  //  57x57
     final int maxScreenCol = 16;
-    final int maxScreenRow = 12;
+    final int maxScreenRow = 17;
     final int screenWidth = tileSize * maxScreenCol;
     final int screenHeight = tileSize * maxScreenRow;
 
     KeyHandler keyHandler = new KeyHandler();
-    PLayer pLayer = new PLayer(this, keyHandler);
+    Player player = new Player(this, keyHandler);
     TileManager tileManager = new TileManager(this);
     Thread gameThread;
-
-    //  Set player's default position
-    int playerX = 350;
-    int playerY = 500;
-    int playerSpeed = 4;
 
     //  FPS
     final int FPS = 60;
@@ -70,7 +65,7 @@ public class GamePanel extends JPanel implements Runnable{
     }
 
     public void upDate(){
-        pLayer.update();
+        player.update();
     }
 
     public void paintComponent(Graphics graphics){
@@ -78,11 +73,15 @@ public class GamePanel extends JPanel implements Runnable{
 
         Graphics2D  graphics2D = (Graphics2D) graphics;
 
-        tileManager.draw(graphics2D);
-        pLayer.draw(graphics2D);
+        try {
+            tileManager.draw(graphics2D);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+        player.draw(graphics2D);
 
         graphics2D.setFont(new Font("Arial", Font.PLAIN, 10));
-        graphics2D.drawString("FPS", 720, 30);
+        graphics2D.drawString("FPS", 750, 30);
         graphics2D.dispose();
     }
 }

@@ -6,25 +6,24 @@ import java.util.ArrayList;
 import java.util.Objects;
 import java.util.Random;
 
-public class PLayer extends Entity{
+public class Player extends Entity{
     GamePanel gamePanel;
     KeyHandler keyHandler;
 
-    public ArrayList<BufferedImage> getBufferedImages() {
-        return bufferedImages;
-    }
-
-    private ArrayList<BufferedImage> bufferedImages;
-    private Random random;
+    private final ArrayList<BufferedImage> bufferedImages;
+    private final Random random;
 
 
-    public PLayer(GamePanel gamePanel, KeyHandler keyHandler){
+    public Player(GamePanel gamePanel, KeyHandler keyHandler){
         this.gamePanel = gamePanel;
         this.keyHandler = keyHandler;
         random = new Random();
         bufferedImages = new ArrayList<>();
         setDefaultValues();
         getPlayerImage();
+    }
+    public ArrayList<BufferedImage> getBufferedImages() {
+        return bufferedImages;
     }
     public void setDefaultValues(){
         x = 400;
@@ -47,15 +46,18 @@ public class PLayer extends Entity{
             e.printStackTrace();
         }
     }
-
     public void update(){
         if(keyHandler.leftPressed){
             direction = "left";
-            x -= speed;
+            if(x > 0) {
+                x -= speed;
+            }
         }
         else if (keyHandler.rightPressed) {
             direction = "right";
-            x += speed;
+            if(x < (gamePanel.screenWidth - gamePanel.tileSize)){
+                x += speed;
+            }
         }
     }
 
