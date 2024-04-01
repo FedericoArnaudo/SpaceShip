@@ -7,13 +7,15 @@ import java.util.Random;
 
 public class TileManager {
     GamePanel gamePanel;
-    private ArrayList<Tile> tiles;
+    private final ArrayList<Tile> tiles;
     private int countDraw;
+    private int imagesNumb;
 
     public TileManager(GamePanel gamePanel){
         Random random = new Random();
         tiles = new ArrayList<>();
         countDraw = 0;
+        imagesNumb = 66;
         this.gamePanel = gamePanel;
         //tiles = new Tile[12];
 
@@ -22,9 +24,9 @@ public class TileManager {
 
     public void getTileImage(){
         try {
-            for(int i = 0; i < 18; i ++){
+            for(int i = 0; i < imagesNumb; i ++){
                 Tile tile = new Tile();
-                tile.image = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/space1/space" + (i+1) + ".png")));
+                tile.image = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/space3/fila-" + (i+1) + "-columna-1.png")));
                 tiles.add(tile);
             }
         }
@@ -34,10 +36,10 @@ public class TileManager {
     }
 
     public void draw(Graphics2D graphics2D) throws InterruptedException {
-        for(int i = 0; i < 18; i ++){
-            graphics2D.drawImage(tiles.get(i).image, 0, (gamePanel.tileSize * i), gamePanel.screenWidth, gamePanel.tileSize, null);
+        for(int i = 0; i < imagesNumb; i ++){
+            graphics2D.drawImage(tiles.get(i).image, 0, (gamePanel.originalTileSize * i), gamePanel.screenWidth, gamePanel.originalTileSize, null);
 
-            if (countDraw == 4 && i == 17){
+            if (countDraw == 2 && i == (imagesNumb - 1)){
                 Tile tile = tiles.get(i);
                 ArrayList<Tile> tiles1 = new ArrayList<>();
                 tiles1.add(tile);
