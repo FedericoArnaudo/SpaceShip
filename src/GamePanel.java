@@ -13,12 +13,15 @@ public class GamePanel extends JPanel implements Runnable{
 
     KeyHandler keyHandler = new KeyHandler();
     Player player = new Player(this, keyHandler);
+    Meteor meteor1 = new Meteor(this);
+    Meteor meteor2 = new Meteor(this);
     TileManager tileManager = new TileManager(this);
     Thread gameThread;
 
     //  FPS
     final int FPS = 60;
-    double delta = 0;
+    private double timer = 0;
+    private int drawCount = 0;
 
 
     public GamePanel(){
@@ -38,16 +41,14 @@ public class GamePanel extends JPanel implements Runnable{
     public void run(){
         double drawInterval = 1000000000/FPS;   //1ps/FPS   intervalo de refresh
         double nextDrawTime = System.nanoTime() + drawInterval;
-        while (gameThread != null){
-            //System.out.println("The game ir running");
+        timer = System.nanoTime();
 
+        while (gameThread != null){
              // 1 UPDATE:   update information such as character positions
             upDate();
              // 2 DRAW:     draw the screen with the updated information
             repaint();
-
-
-
+            drawCount ++;
             try {
                 double remainingTime = nextDrawTime - System.nanoTime();
                 remainingTime = remainingTime/1000000;
@@ -56,16 +57,17 @@ public class GamePanel extends JPanel implements Runnable{
                 }
 
                 Thread.sleep((long) remainingTime);
-
-                nextDrawTime += drawInterval;
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
             }
+            nextDrawTime += drawInterval;
         }
     }
 
     public void upDate(){
         player.update();
+        meteor1.update();
+        meteor2.update();
     }
 
     public void paintComponent(Graphics graphics){
@@ -79,9 +81,17 @@ public class GamePanel extends JPanel implements Runnable{
             throw new RuntimeException(e);
         }
         player.draw(graphics2D);
+        meteor1.draw(graphics2D);
+        meteor2.draw(graphics2D);
 
-        graphics2D.setFont(new Font("Arial", Font.PLAIN, 10));
-        graphics2D.drawString("FPS", 750, 30);
-        graphics2D.dispose();
+        timer = System.nanoTime() - timer;
+        if(timer > 1000000000){
+            graphics2D.setFont(new Font("Arial", Font.PLAIN, 10));
+            graphics2D.drawString("FPS: " + drawCount, 750, 30);
+            graphics2D.dispose();
+            drawCount = 0;
+            timer = 0;
+        }
+
     }
 }

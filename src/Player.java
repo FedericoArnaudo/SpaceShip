@@ -19,6 +19,7 @@ public class Player extends Entity{
         this.keyHandler = keyHandler;
         random = new Random();
         bufferedImages = new ArrayList<>();
+        solidArea = new Rectangle(0, 0, gamePanel.tileSize, gamePanel.tileSize);
         setDefaultValues();
         getPlayerImage();
     }
@@ -34,13 +35,13 @@ public class Player extends Entity{
 
     public void getPlayerImage() {
         try {
-            flame1 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/MainShip194.png")));
-            flame2 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/MainShip195.png")));
-            flame3 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/MainShip196.png")));
+            ship1 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/MainShip194.png")));
+            ship2 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/MainShip195.png")));
+            ship3 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/MainShip196.png")));
 
-            bufferedImages.add(flame1);
-            bufferedImages.add(flame2);
-            bufferedImages.add(flame3);
+            bufferedImages.add(ship1);
+            bufferedImages.add(ship2);
+            bufferedImages.add(ship3);
         }
         catch (IOException e){
             e.printStackTrace();
@@ -62,8 +63,6 @@ public class Player extends Entity{
     }
 
     public void draw(Graphics2D graphics2D){
-        //  graphics2D.setColor(Color.white);
-        //  graphics2D.fillRect(x, y, gamePanel.tileSize, gamePanel.tileSize);
 
         BufferedImage bufferedImage = bufferedImages.get(random.nextInt(getBufferedImages().size()));
 

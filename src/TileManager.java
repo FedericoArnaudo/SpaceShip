@@ -39,7 +39,7 @@ public class TileManager {
         for(int i = 0; i < imagesNumb; i ++){
             graphics2D.drawImage(tiles.get(i).image, 0, (gamePanel.originalTileSize * i), gamePanel.screenWidth, gamePanel.originalTileSize, null);
 
-            if (countDraw == 2 && i == (imagesNumb - 1)){
+            if (countDraw == 4 && i == (imagesNumb - 1)){
                 Tile tile = tiles.get(i);
                 ArrayList<Tile> tiles1 = new ArrayList<>();
                 tiles1.add(tile);
